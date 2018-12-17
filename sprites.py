@@ -68,9 +68,9 @@ class Player(Sprite):
         # print("vel " + str(self.vel))
 
         keys = pg.key.get_pressed()
-        if keys[pg.K_a]:
+        if keys[pg.K_LEFT]:
             self.acc.x =  -PLAYER_ACC
-        if keys[pg.K_d]:
+        if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
         # set player friction
         self.acc.x += self.vel.x * PLAYER_FRICTION

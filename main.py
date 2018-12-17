@@ -1,4 +1,4 @@
-# this file was created by Chris Cozort
+# this file was created by Joey Horowitz
 # Sources: goo.gl/2KMivS 
 # now available in github
 
@@ -6,7 +6,10 @@
 Curious, Creative, Tenacious(requires hopefulness)
 
 Game ideas:
-Walls closing in on player
+Changing the tone and feel of the game
+
+Gameplay ideas:
+Use arrow keys as controls, so it's easier to play with one hand
 
 '''
 import pygame as pg
@@ -47,13 +50,18 @@ class Game:
                 self.highscore = 0
                 print("exception")
         # load spritesheet image
-        self.spritesheet = Spritesheet(path.join(img_dir, SPRITESHEET))       
+        self.spritesheet = Spritesheet(path.join(img_dir, SPRITESHEET)) 
+        # load cloud image
+        self.cloud_images = []
+        for i in range(1,4):
+            self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
         # load sounds
         # great place for creating sounds: https://www.bfxr.net/
         self.snd_dir = path.join(self.dir, 'snd')
         self.jump_sound = [pg.mixer.Sound(path.join(self.snd_dir, 'Jump18.wav')),
                             pg.mixer.Sound(path.join(self.snd_dir, 'Jump24.wav'))]
         self.boost_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump29.wav'))
+        self.death_sound = pg.mixer.Sound(path.join(self.snd_dir, 'oof.mp3'))
 
                             
     def new(self):
@@ -163,12 +171,17 @@ class Game:
                 sprite.rect.y -= max(self.player.vel.y, 10)
                 if sprite.rect.bottom < 0:
                     sprite.kill()
-        if len(self.platforms) == 0:
-            self.playing = False
+            if len(self.platforms) == 0:
+                self.playing = False
         # generate new random platforms
         while len(self.platforms) < 6:
             width = random.randrange(50, 100)
             ''' removed widths and height params to allow for sprites'''
+            class Sound(oof.mp3):
+                if self.player.rect.bottom > HEIGHT:
+                    pg.mixer.Sound.play(oof.mp3)
+                    pg.mixer.music.stop()
+                largeText = pg.font.SysFont("comicsans",115)
             # changed due to passing into groups through sprites lib file
             # p = Platform(self, random.randrange(0,WIDTH-width), 
             #                 random.randrange(-75, -30))
@@ -183,10 +196,10 @@ class Game:
                         self.playing = False
                     self.running = False
                 if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_SPACE:
+                    if event.key == pg.K_UP:
                         self.player.jump()
                 if event.type == pg.KEYUP:
-                    if event.key == pg.K_SPACE:
+                    if event.key == pg.K_UP:
                         # cuts the jump short if the space bar is released
                         self.player.jump_cut()
     def draw(self):
@@ -205,7 +218,7 @@ class Game:
                 if event.type == pg.QUIT:
                     waiting = False
                     self.running = False
-                if event.type ==pg.KEYUP:
+                if event.type == pg.KEYUP:
                     waiting = False
     def show_start_screen(self):
         # game splash screen

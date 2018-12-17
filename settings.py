@@ -1,6 +1,6 @@
-TITLE = "jumpy"
+TITLE = "Crimson primordial sky"
 # screen dims
-WIDTH = 480
+WIDTH = 600
 HEIGHT = 600
 # frames per second
 FPS = 60
@@ -8,7 +8,7 @@ FPS = 60
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 REDDISH = (240,55,66)
-SKY_BLUE = (143, 185, 252)
+CRIMSON = (220,20,60)
 FONT_NAME = 'arial'
 SPRITESHEET = "spritesheet_jumper.png"
 # data files
